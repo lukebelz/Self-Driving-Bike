@@ -17,11 +17,8 @@ class GPS:
 
         self.ser = serial.Serial( port , baud, timeout = timeout )
 
-        while 1:
-            self.updateGpsData(False)
-
     def updateGpsData(self, print_):
-        line = self.ser.readline()
+        line = self.ser.readline().decode("utf-8")
         splitline = line.split(',')
 
         if(splitline[0] == '$GPGGA'):
@@ -40,5 +37,6 @@ class GPS:
             if(print_):
                 print("{} {} {} {} {} {}".format(self.latDegree, self.latFeet, self.latDirec, self.longDegree, self.longFeet, self.longDirec))
 
-
-gps = GPS('/dev/ttyUSB0', 4800, 5)
+    def start(self):
+        while 1:
+            self.updateGpsData(True)
